@@ -20,7 +20,7 @@ $buku = query("SELECT * FROM buku LIMIT $awalData, $jumlahDataPerHalaman");
 
 // tombol cari ditekan
 if( isset($_POST["cari"]) ) {
-	$buku = cari($_POST["keyword"]);
+	$buku = cariBuku($_POST["keyword"]);
 }
 
 ?>
@@ -55,21 +55,6 @@ body{
   box-shadow: 0 5px 10px rgba(0,0,0,0.2);
 }
 
-.insert-search{
-    margin-top: 20px;
-    margin-bottom: 20px;
-  justify-content: space-around;
-  display: flex;
-
-}
-
-.insert-search .form-cari{
-  
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .navbar h1{
   margin-left: 100px;
 }
@@ -86,6 +71,21 @@ body{
   font-size: 20px;
   font-weight: 500;
   text-decoration: none;
+}
+
+.navbar .navbar-item a:before{
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: #34efdf;
+  border-radius: 12px;
+  transition: all 0.4s ease;
+}
+.navbar .navbar-item a:hover:before{
+  width: 100%;
 }
 
 .form-cari {
@@ -107,20 +107,19 @@ body{
   width: 300px;
 }
 
+.insert-search{
+    margin-top: 20px;
+    margin-bottom: 20px;
+  justify-content: space-around;
+  display: flex;
 
-.navbar .navbar-item a:before{
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 3px;
-  width: 0%;
-  background: #34efdf;
-  border-radius: 12px;
-  transition: all 0.4s ease;
 }
-.navbar .navbar-item a:hover:before{
-  width: 100%;
+
+.insert-search .form-cari{
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .container{
@@ -193,6 +192,78 @@ a {
 .pagination a.prev, .pagination a.next {
     font-weight: bold;
 }
+.card-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+}
+.card {
+    display: flex; /* Mengatur card untuk tampil sebagai flex container */
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px; /* Lebar maksimum card */
+    margin: 20px;
+    overflow: hidden;
+    transition: transform 0.1s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card-img {
+    width: 40%; /* Lebar gambar */
+    height: auto;
+    object-fit: cover; /* Memastikan gambar tetap proporsional */
+}
+
+.card-content {
+    padding: 20px;
+    width: 60%; /* Lebar konten teks */
+    display: flex;
+    flex-direction: column;
+}
+
+.card-title {
+    font-size: 1.8em; /* Ukuran font judul */
+    font-weight: 600; /* Menebalkan judul */
+    margin: 0;
+    color: #333; /* Warna judul */
+}
+
+.card-description {
+    font-size: 1.1em; /* Ukuran font deskripsi */
+    color: #666;
+    margin: 10px 0;
+    line-height: 1.6; /* Jarak antar baris deskripsi */
+}
+
+.card-date {
+    font-size: 0.9em; /* Ukuran font tanggal */
+    color: #999; /* Warna tanggal */
+    margin-bottom: 10px;
+}
+
+.card-button {
+    display: inline-block;
+    padding: 8px 16px; /* Mengurangi ukuran tombol */
+    margin-top: 100px;
+    background-color: #007BFF;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    font-size: 0.9em; /* Ukuran font tombol */
+}
+
+.card-button:hover {
+    background-color: #0056b3;
+}
+
 	</style>
 
 </head>
@@ -212,8 +283,7 @@ a {
 
 
 	<!-- navigasi -->
-	
-	<div class="pagination">
+	<!-- <div class="pagination">
     <a href="?halaman=1">awal</a>
     
     <?php if( $halamanAktif > 1 ) : ?>
@@ -233,60 +303,28 @@ a {
     <?php endif; ?>
     
     <a href="?halaman=<?= $jumlahHalaman; ?>">akhir</a>
-</div>
-
-<div class="insert-search">
-
-		<div class="tambah-item">
-			<button class="btn-add-siswa">
-				<a href="tambah-buku.php">Tambah Data buku</a>
-			</button>
-		</div>
-
-	<form action="" method="post" class="form-cari">
-		<input type="text" name="keyword" size="40" placeholder="Masukkan keyword pencarian.." autocomplete="off" id="keyword">		
-
-	</form>
-
-</div>
-
-<div class="container" id="container">
-
-<table border="1" cellpadding="10" cellspacing="0">
-
-<tr>
-	<th>No.</th>
-	<th class="aksi">Aksi</th>
-	<th>Gambar</th>
-	<th>Judul</th>
-	<th>Penerbit</th>
-	<th>Tahun</th>
-	<th>Jumlah</th>
-</tr>
+</div> -->
 
 <?php $i = 1; ?>
+<div class="card-wrapper">
 <?php foreach( $buku as $row ) : ?>
-<tr>
-	<td><?= $i; ?></td>
-	<td>
-		<a href="ubah-buku.php?id=<?= $row["id"]; ?>">Ubah</a> |
-		<a href="hapus-buku.php?id=<?= $row["id"]; ?>" onclick="return confirm('Apakah anda yakin untuk menghapus?');">Hapus</a>
-	</td>
-	<td><img src="img/<?= $row["gambar"]; ?>" width="50"></td>
-	<td><?= $row["judul"]; ?></td>
-	<td><?= $row["penerbit"]; ?></td>
-	<td><?= $row["tahun"]; ?></td>
-	<td><?= $row["jumlah"]; ?></td>
-</tr>
+    <div class="card">
+        <img src="img/<?= $row["gambar"]; ?>" alt="Image" class="card-img">
+        <div class="card-content">
+            <h2 class="card-title"><?= $row["judul"]; ?></h2>
+            <p class="card-description"><?= $row["deskripsi"]; ?></p>
+            <p class="card-date">Tanggal Terbit : <?= $row["tanggal_terbit"]; ?></p>
+            <p class="card-date">Penerbit : <?= $row["penerbit"]; ?></p>
+            
+            <a href="detail-buku.php?id=<?= $row["id"]; ?>" class="card-button">Pinjam Buku</a>
+        </div>
+    </div>
 <?php $i++; ?>
 <?php endforeach; ?>
-
-</table>
-
 </div>
 
 
-<script src="js/script-buku.js"></script>
+<script src="js/script.js"></script>
 
 </body>
 </html>

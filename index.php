@@ -55,20 +55,7 @@ body{
   box-shadow: 0 5px 10px rgba(0,0,0,0.2);
 }
 
-.insert-search{
-    margin-top: 20px;
-    margin-bottom: 20px;
-  justify-content: space-around;
-  display: flex;
 
-}
-
-.insert-search .form-cari{
-  
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
 .navbar h1{
   margin-left: 100px;
@@ -86,6 +73,21 @@ body{
   font-size: 20px;
   font-weight: 500;
   text-decoration: none;
+}
+
+.navbar .navbar-item a:before{
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: #34efdf;
+  border-radius: 12px;
+  transition: all 0.4s ease;
+}
+.navbar .navbar-item a:hover:before{
+  width: 100%;
 }
 
 .form-cari {
@@ -107,20 +109,19 @@ body{
   width: 300px;
 }
 
+.insert-search{
+    margin-top: 20px;
+    margin-bottom: 20px;
+  justify-content: space-around;
+  display: flex;
 
-.navbar .navbar-item a:before{
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 3px;
-  width: 0%;
-  background: #34efdf;
-  border-radius: 12px;
-  transition: all 0.4s ease;
 }
-.navbar .navbar-item a:hover:before{
-  width: 100%;
+
+.insert-search .form-cari{
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .container{
